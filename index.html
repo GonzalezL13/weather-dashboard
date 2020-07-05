@@ -16,17 +16,37 @@
         <h1 class="text-center">Weather Dashboard</h1>
     </div>
 
-    <div class="row">
+    <div class="row card-deck">
         <div class="card col-md-3">
             <h3 class="card-header">Search for a City:</h3>
             <form id="user-form" class="card-body">
-                <input type="text" class="inputValue" />
-                <button type="submit" class="btn btn-primary"><i class="fas fa-search"style="color: white;"></i></button>
+                <input type="text" id="cityInput" value="" />
+                <button type="submit" id="searchBtn" class="btn btn-primary"><i class="fas fa-search"
+                        style="color: white;"></i></button>
             </form>
+        </div>
+
+        <div class="card col-md-9">
+            <div class="card-body display">
+                <h3 class="cityName"></h3>
+                <p class="cityTemp"></p>
+                <p class="cityHumid"></p>
+                <p class="cityWind"></p>
+                <p class="cityUv"></p>
+            </div>
         </div>
     </div>
 
-    <script src="./assets/js/style.js"></script>
+    <div class="row justify-content-end">
+        <div class="card col-md-9">
+            <div class="card-body">
+                <h5>5 Day Forecast</h5>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="./assets/js/script.js"></script>
 </body>
 
 </html>
