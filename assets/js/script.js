@@ -6,12 +6,14 @@ var cityHumid = document.querySelector(".cityHumid");
 var cityWind = document.querySelector(".cityWind");
 var cityUv = document.querySelector(".cityUv");
 
-var currentWeather = function(city) {
-    var apiUrl = ("https://api.openweathermap.org/data/2.5/weather?q=" + 
-    city + 
-    "&units=imperial&appid=d7e187056bfdee658678bfef68ee958b");
-    
-    fetch(apiUrl) 
+//function to get current weather
+var currentWeather = function (city) {
+    var apiUrl = ("https://api.openweathermap.org/data/2.5/weather?q=" +
+        city +
+        "&units=imperial&appid=d7e187056bfdee658678bfef68ee958b");
+
+    //fetching api
+    fetch(apiUrl)
         .then(function (response) {
             return response.json(response);
         })
@@ -21,22 +23,26 @@ var currentWeather = function(city) {
             var tempValue = data.main.temp;
             var humidValue = data.main.humidity;
             var windValue = data.wind.speed
+            //inputing data received to diplay
             cityName.innerHTML = nameValue;
-            cityTemp.innerHTML = "Tempature: " +  tempValue;
-            cityHumid.innerHTML = "Humidity: " +  humidValue + "%";
+            cityTemp.innerHTML = "Tempature: " + tempValue;
+            cityHumid.innerHTML = "Humidity: " + humidValue + "%";
             cityWind.innerHTML = "Wind Speed: " + windValue + " MPH";
+            //pushed lat and lon to uv function
             uvIndex(data.coord.lat, data.coord.lon);
         })
 };
 
-var formInput = function(event) {
+//this function will receive the city name
+var formInput = function (event) {
     event.preventDefault();
     var cityName = cityInput.value.trim();
 
     if (cityName) {
+        //pushed it to current weather function
         currentWeather(cityName);
         cityInput.value = "";
-
+        //pushed it to forecast function
         fiveDayForecast(cityName);
         cityInput.value = "";
     }
@@ -45,61 +51,67 @@ var formInput = function(event) {
     }
 };
 
-var uvIndex = function(lat, lon) {
+//will receive UV info 
+var uvIndex = function (lat, lon) {
     var apiUrl = "http://api.openweathermap.org/data/2.5/uvi?appid=d7e187056bfdee658678bfef68ee958b&lat=" +
-    lat +
-    "&lon=" +
-    lon;
+        lat +
+        "&lon=" +
+        lon;
 
     fetch(apiUrl)
         .then(function (response) {
             return response.json(response);
         })
-        .then(function(data) {
+        .then(function (data) {
             //console.log(data);
             var uvValue = data.value;
+            //will display it on doc
             cityUv.innerHTML = "UV Index: " + uvValue;
         })
 };
 
-var fiveDayForecast = function(city) {
+//5 day forecast function
+var fiveDayForecast = function (city) {
     var apiUrl = "http://api.openweathermap.org/data/2.5/forecast?q=" +
-    city +
-    "&units=imperial&appid=d7e187056bfdee658678bfef68ee958b";
+        city +
+        "&units=imperial&appid=d7e187056bfdee658678bfef68ee958b";
 
     fetch(apiUrl)
-        .then(function(response) {
+        .then(function (response) {
             return response.json(response);
         })
-        .then(function(data) {
+        .then(function (data) {
             console.log(data);
-            for(var i=1; i<data.list.length; i+=8) {
-                if (data.list[i].dt_txt.indexOf("1,9,17,25,33")) {
+            
+            for (var i = 1; i < data.list.length; i += 8) {
+                //created elements and classes and pushed data that was received to display on page
+                var forecastDisplay = document.querySelector("#forecastDisplay");
+                var weatherCard = document.createElement("div");
+                weatherCard.classList.add("card", "row", "col-md-1", "bg-primary", "text-white");
+                forecastDisplay.appendChild(weatherCard);
 
-                    var forecastDisplay = document.querySelector("#forecastDisplay");
-                    var weatherCard = document.createElement("div");
-                    weatherCard.classList.add("card","row","col-md-1","bg-primary","text-white");
-                    forecastDisplay.appendChild(weatherCard);
+                //will display date
+                var dateEl = document.createElement("h6");
+                dateEl.textContent = new Date(data.list[i].dt_txt).toLocaleDateString();
+                weatherCard.appendChild(dateEl);
 
-                    var dateEl = document.createElement("h5");
-                    dateEl.textContent = new Date(data.list[i].dt_txt).toLocaleDateString();
-                    weatherCard.appendChild(dateEl);
+                //will display icon
+                var iconEl = document.createElement("img");
+                iconEl.classList.add("card-img");
+                iconEl.src = "http://openweathermap.org/img/wn/" + data.list[i].weather[0].icon + "@2x.png";
+                weatherCard.appendChild(iconEl);
 
-                    var iconEl = document.createElement("img");
-                    iconEl.classList.add("card-img");
-                    iconEl.src ="http://openweathermap.org/img/wn/" +data.list[i].weather[0].icon+ "@2x.png";
-                    weatherCard.appendChild(iconEl);
+                //will display tempature
+                var temp = document.createElement("p");
+                temp.classList.add("card-text");
+                temp.textContent = "Temp: " + data.list[i].main.temp_max + " °F";
+                weatherCard.appendChild(temp);
 
-                    var temp = document.createElement("p");
-                    temp.classList.add("card-text");
-                    temp.textContent = "Temp: " + data.list[i].main.temp_max + " °F";
-                    weatherCard.appendChild(temp);
-
-                    var humidityEl = document.createElement("p");
-                    humidityEl.classList.add("card-text");
-                    humidityEl.textContent = "Humidity: " + data.list[i].main.humidity + " %";
-                    weatherCard.appendChild(humidityEl);
-                }
+                //will display humidity
+                var humidityEl = document.createElement("p");
+                humidityEl.classList.add("card-text");
+                humidityEl.textContent = "Humidity: " + data.list[i].main.humidity + " %";
+                weatherCard.appendChild(humidityEl);
             }
         })
 };
