@@ -7,7 +7,9 @@ var cityWind = document.querySelector(".cityWind");
 var cityUv = document.querySelector(".cityUv");
 
 var currentWeather = function(city) {
-    var apiUrl = ("https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=d7e187056bfdee658678bfef68ee958b");
+    var apiUrl = ("https://api.openweathermap.org/data/2.5/weather?q=" + 
+    city + 
+    "&units=imperial&appid=d7e187056bfdee658678bfef68ee958b");
     
     fetch(apiUrl) 
         .then(function (response) {
@@ -34,6 +36,9 @@ var formInput = function(event) {
     if (cityName) {
         currentWeather(cityName);
         cityInput.value = "";
+
+        fiveDayForecast(cityName);
+        cityInput.value = "";
     }
     else {
         alert("Please enter city")
@@ -51,11 +56,40 @@ var uvIndex = function(lat, lon) {
             return response.json(response);
         })
         .then(function(data) {
-            console.log(data);
+            //console.log(data);
             var uvValue = data.value;
             cityUv.innerHTML = "UV Index: " + uvValue;
         })
-}
+};
+
+var fiveDayForecast = function(city) {
+    var apiUrl = "http://api.openweathermap.org/data/2.5/forecast?q=" +
+    city +
+    "&units=imperial&appid=d7e187056bfdee658678bfef68ee958b";
+
+    fetch(apiUrl)
+        .then(function(response) {
+            return response.json(response);
+        })
+        .then(function(data) {
+            console.log(data);
+            for(var i=2; i<data.list.length; i+=8) {
+                if (data.list[i].dt_txt.indexOf("2,10,18,26,34")) {
+
+                    var forecastDisplay = document.querySelector("#forecastDisplay");
+                    var weatherCard = document.createElement("div");
+                    weatherCard.classList.add("card","row","col-md-1","bg-primary","text-white");
+                    forecastDisplay.appendChild(weatherCard);
+
+                    var temp = document.createElement("p");
+                    temp.classList.add("card-text");
+                    temp.textContent = "Temp: " + data.list[i].main.temp_max + " °F";
+                    weatherCard.appendChild(temp);
+                }
+            }
+        })
+};
+
 
 
 
