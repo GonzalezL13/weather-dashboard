@@ -73,18 +73,32 @@ var fiveDayForecast = function(city) {
         })
         .then(function(data) {
             console.log(data);
-            for(var i=2; i<data.list.length; i+=8) {
-                if (data.list[i].dt_txt.indexOf("2,10,18,26,34")) {
+            for(var i=1; i<data.list.length; i+=8) {
+                if (data.list[i].dt_txt.indexOf("1,9,17,25,33")) {
 
                     var forecastDisplay = document.querySelector("#forecastDisplay");
                     var weatherCard = document.createElement("div");
                     weatherCard.classList.add("card","row","col-md-1","bg-primary","text-white");
                     forecastDisplay.appendChild(weatherCard);
 
+                    var dateEl = document.createElement("h5");
+                    dateEl.textContent = new Date(data.list[i].dt_txt).toLocaleDateString();
+                    weatherCard.appendChild(dateEl);
+
+                    var iconEl = document.createElement("img");
+                    iconEl.classList.add("card-img");
+                    iconEl.src ="http://openweathermap.org/img/wn/" +data.list[i].weather[0].icon+ "@2x.png";
+                    weatherCard.appendChild(iconEl);
+
                     var temp = document.createElement("p");
                     temp.classList.add("card-text");
                     temp.textContent = "Temp: " + data.list[i].main.temp_max + " °F";
                     weatherCard.appendChild(temp);
+
+                    var humidityEl = document.createElement("p");
+                    humidityEl.classList.add("card-text");
+                    humidityEl.textContent = "Humidity: " + data.list[i].main.humidity + " %";
+                    weatherCard.appendChild(humidityEl);
                 }
             }
         })
