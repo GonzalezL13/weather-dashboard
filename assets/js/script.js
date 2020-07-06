@@ -103,7 +103,7 @@ var fiveDayForecast = function (city) {
                 //will display icon
                 var iconEl = document.createElement("img");
                 iconEl.classList.add("card-img");
-                iconEl.src = "http://openweathermap.org/img/wn/" + data.list[i].weather[0].icon + "@2x.png";
+                iconEl.src = "https://openweathermap.org/img/wn/" + data.list[i].weather[0].icon + "@2x.png";
                 weatherCard.appendChild(iconEl);
 
                 //will display tempature

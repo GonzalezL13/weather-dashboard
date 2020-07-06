@@ -2,6 +2,10 @@ This week's challenge was to create a weather dashboard using OpenWeather's APIs
 The API's I used were to receive the city's current weather, the 5-day forecast and the UV index. 
 The only thing the user needs to do is just input a city and the information will come up. 
 
+The link to my github is : https://github.com/GonzalezL13/weather-dashboard.git
+
+the link to my deployed app is : https://gonzalezl13.github.io/weather-dashboard/
+
 Below are the acceptance criteria the challenged provided.
 
 GIVEN a weather dashboard with form inputs
