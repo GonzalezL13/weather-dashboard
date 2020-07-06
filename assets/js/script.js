@@ -18,14 +18,15 @@ var currentWeather = function (city) {
             return response.json(response);
         })
         .then(function (data) {
-            //console.log(data);
+            console.log(data);
             var nameValue = data.name;
             var tempValue = data.main.temp;
             var humidValue = data.main.humidity;
-            var windValue = data.wind.speed
+            var windValue = data.wind.speed;
+            var weatherIcon = data.weather[0].icon;
             //inputing data received to diplay
-            cityName.innerHTML = nameValue;
-            cityTemp.innerHTML = "Tempature: " + tempValue;
+            cityName.innerHTML = nameValue + ' - ' +new Date().toLocaleDateString();
+            cityTemp.innerHTML = "Temperature: " + tempValue + " °F";
             cityHumid.innerHTML = "Humidity: " + humidValue + "%";
             cityWind.innerHTML = "Wind Speed: " + windValue + " MPH";
             //pushed lat and lon to uv function
@@ -45,6 +46,8 @@ var formInput = function (event) {
         //pushed it to forecast function
         fiveDayForecast(cityName);
         cityInput.value = "";
+
+        forecastDisplay.textContent="";
     }
     else {
         alert("Please enter city")
@@ -82,7 +85,9 @@ var fiveDayForecast = function (city) {
         })
         .then(function (data) {
             console.log(data);
+           
             
+
             for (var i = 1; i < data.list.length; i += 8) {
                 //created elements and classes and pushed data that was received to display on page
                 var forecastDisplay = document.querySelector("#forecastDisplay");
