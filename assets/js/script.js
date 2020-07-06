@@ -56,7 +56,7 @@ var formInput = function (event) {
 
 //will receive UV info 
 var uvIndex = function (lat, lon) {
-    var apiUrl = "http://api.openweathermap.org/data/2.5/uvi?appid=d7e187056bfdee658678bfef68ee958b&lat=" +
+    var apiUrl = "https://api.openweathermap.org/data/2.5/uvi?appid=d7e187056bfdee658678bfef68ee958b&lat=" +
         lat +
         "&lon=" +
         lon;
@@ -75,7 +75,7 @@ var uvIndex = function (lat, lon) {
 
 //5 day forecast function
 var fiveDayForecast = function (city) {
-    var apiUrl = "http://api.openweathermap.org/data/2.5/forecast?q=" +
+    var apiUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" +
         city +
         "&units=imperial&appid=d7e187056bfdee658678bfef68ee958b";
 
